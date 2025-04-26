@@ -20,7 +20,14 @@ function proxyRequest(clientReq, clientRes) {
     const parsedUrl = url.parse(targetUrl);
     const protocol = parsedUrl.protocol === 'https:' ? https : http;
 
-    const proxyReq = protocol.request(targetUrl, (proxyRes) => {
+    const options = {
+        method: 'GET',
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36'
+        }
+    };
+
+    const proxyReq = protocol.request(targetUrl, options, (proxyRes) => {
         clientRes.writeHead(proxyRes.statusCode, proxyRes.headers);
         proxyRes.pipe(clientRes);
     });
